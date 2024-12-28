@@ -1,7 +1,7 @@
 import database from "../../../../../infra/database";
 import { InternalServerError } from "../../../../../infra/errors";
 
-export default async function GET() {
+export async function GET() {
   try {
     const updatedAt = new Date().toISOString();
 
