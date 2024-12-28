@@ -38,9 +38,9 @@ export async function GET() {
     });
 
     console.log("\n Erro dentro do catch do controller:");
-    console.error(publicErrorObject);
+    console.error(publicErrorObject.toJSON());
 
-    return new Response(JSON.stringify(publicErrorObject), {
+    return new Response(JSON.stringify(publicErrorObject.toJSON()), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
