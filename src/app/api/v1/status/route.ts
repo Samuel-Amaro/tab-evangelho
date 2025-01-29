@@ -1,5 +1,5 @@
+import controller from "../../../../../infra/controller";
 import database from "../../../../../infra/database";
-import { InternalServerError } from "../../../../../infra/errors";
 
 export async function GET() {
   try {
@@ -33,16 +33,30 @@ export async function GET() {
       },
     });
   } catch (error) {
-    const publicErrorObject = new InternalServerError({
-      cause: error,
-    });
-
-    console.log("\n Erro dentro do catch do controller:");
-    console.error(publicErrorObject.toJSON());
-
-    return new Response(JSON.stringify(publicErrorObject.toJSON()), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return controller.onErrorHandler(error);
   }
+}
+
+export async function POST() {
+  return controller.onNoMatchHandler();
+}
+
+export async function PUT() {
+  return controller.onNoMatchHandler();
+}
+
+export async function PATCH() {
+  return controller.onNoMatchHandler();
+}
+
+export async function DELETE() {
+  return controller.onNoMatchHandler();
+}
+
+export async function HEAD() {
+  return controller.onNoMatchHandler();
+}
+
+export async function OPTIONS() {
+  return controller.onNoMatchHandler();
 }
