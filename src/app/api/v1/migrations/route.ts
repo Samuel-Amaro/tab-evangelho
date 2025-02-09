@@ -1,40 +1,14 @@
-import { runner, RunnerOption } from "node-pg-migrate";
-import { Client } from "pg";
-import database from "../../../../../infra/database";
-import { resolve } from "path";
 import controller from "../../../../../infra/controller";
+import migrator from "@/models/migrator";
 
 async function migrations(method: "GET" | "POST") {
-  let dbClient: Client | undefined;
-
-  try {
-    dbClient = await database.getNewClient();
-
-    const defaultMigrationOptions: RunnerOption = {
-      dbClient: dbClient,
-      dryRun: true,
-      dir: resolve("infra", "migrations"),
-      direction: "up",
-      verbose: true,
-      migrationsTable: "pgmigrations",
-    };
-
-    if (method === "GET") {
-      return await runner(defaultMigrationOptions);
-    }
-
-    const migratedMigrations = await runner({
-      ...defaultMigrationOptions,
-      dryRun: false,
-    });
-
-    return migratedMigrations;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  } finally {
-    await dbClient?.end();
+  if (method === "GET") {
+    return await migrator.listPendingMigrations();
   }
+
+  const migratedMigrations = await migrator.runPendingMigrations();
+
+  return migratedMigrations;
 }
 
 export async function POST() {
