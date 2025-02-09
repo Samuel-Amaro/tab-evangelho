@@ -26,7 +26,8 @@ async function listPendingMigrations() {
   } catch (error) {
     const serviceErrorObject = new ServiceError({
       cause: error,
-      message: "Erro ao executar a listagem das migrations pendentes no migration runner.",
+      message:
+        "Erro ao executar a listagem das migrations pendentes no migration runner.",
     });
     throw serviceErrorObject;
   } finally {
